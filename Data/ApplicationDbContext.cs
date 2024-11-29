@@ -11,4 +11,8 @@ public class ApplicationDbContext: DbContext
     }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Product> Products { get; set; }
+    
+    // for student app
+    public DbSet<Student> Students { get; set; }
+    public DbSet<Course> Courses { get; set; }
 }

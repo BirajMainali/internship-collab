@@ -1,6 +1,11 @@
-﻿namespace ProductApp.Controllers;
+﻿using Microsoft.AspNetCore.Mvc;
 
-public class StudentController
+namespace ProductApp.Controllers;
+
+public class StudentController : Controller
 {
-    
+    public IActionResult Index()
+    {
+        return View();
+    }
 }
