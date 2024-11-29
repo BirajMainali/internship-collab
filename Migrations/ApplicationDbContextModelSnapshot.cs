@@ -117,6 +117,29 @@ namespace ProductApp.Migrations
                     b.ToTable("Students");
                 });
 
+            modelBuilder.Entity("ProductApp.Entities.StudentCourse", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("CourseId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("StudentId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentCourses");
+                });
+
             modelBuilder.Entity("ProductApp.Entities.Product", b =>
                 {
                     b.HasOne("ProductApp.Entities.Category", "Category")
@@ -128,9 +151,38 @@ namespace ProductApp.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("ProductApp.Entities.StudentCourse", b =>
+                {
+                    b.HasOne("ProductApp.Entities.Course", "Course")
+                        .WithMany("StudentCourses")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProductApp.Entities.Student", "Student")
+                        .WithMany("StudentCourses")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("ProductApp.Entities.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("ProductApp.Entities.Course", b =>
+                {
+                    b.Navigation("StudentCourses");
+                });
+
+            modelBuilder.Entity("ProductApp.Entities.Student", b =>
+                {
+                    b.Navigation("StudentCourses");
                 });
 #pragma warning restore 612, 618
         }
