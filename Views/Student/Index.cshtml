@@ -1,5 +1,31 @@
-﻿@{
+﻿@model IEnumerable<ProductApp.Entities.Student>;
+
+@{
     ViewData["Title"] = "Student App";
 }
 
-<h2>Student App Index Page</h2>
+<h2>List of Students</h2>
+
+<table class="table table-striped border">
+    <thead>
+    <tr>
+        <td>Name</td>
+        <td>Email</td>
+        <td>Address</td>
+        <td>Actions</td>
+    </tr>
+    </thead>
+    
+    <tbody>
+        @{
+            foreach (var student in Model)
+            {
+                <tr>
+                    <td>@student.Name</td>
+                    <td>@student.Email</td>
+                    <td>@student.Address</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
