@@ -1,0 +1,46 @@
+﻿@model System.Collections.Generic.List<ProductApp.Dto.CategoryDto>
+
+@{
+    ViewBag.Title = "Category List";
+    Layout = "_Layout";
+}
+
+<div class="container my-4">
+    <h2 class="text-center mb-4">@ViewBag.Title</h2>
+    <a class="btn btn-success m" asp-controller="Category" asp-action="Create">
+        + Add
+    </a>
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            <strong>No categories available.</strong>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Description</td>
+                        <td>
+                            <a class="btn btn-warning" asp-controller="Category" asp-action="Edit" asp-route-id="@item.Id">Update</a>
+                            <a class="btn btn-danger" asp-controller="Category" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

@@ -1,0 +1,13 @@
+﻿@model CategoryVm
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Add Category</h2>
+<form method="post">
+Name : - <input type="text" asp-for="Name"/>
+Description : - <input type="text" asp-for="Description"/>
+<button type="submit">Save</button>
+</form>
