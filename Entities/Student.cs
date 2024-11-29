@@ -7,5 +7,6 @@ public class Student
     public string Email { get; set; }
     public string Address { get; set; }
 
-    public ICollection<StudentCourse> StudentCourses { get; set; }
+    public long CourseId { get; set; }
+    public Course Course { get; set; }
 }

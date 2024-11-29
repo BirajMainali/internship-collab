@@ -11,7 +11,7 @@ using ProductApp.Data;
 namespace ProductApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241129160146_Initial_Create")]
+    [Migration("20241129163004_Initial_Create")]
     partial class Initial_Create
     {
         /// <inheritdoc />
@@ -107,6 +107,9 @@ namespace ProductApp.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<long>("CourseId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
@@ -117,30 +120,9 @@ namespace ProductApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Students");
-                });
-
-            modelBuilder.Entity("ProductApp.Entities.StudentCourse", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("CourseId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("StudentId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
                     b.HasIndex("CourseId");
 
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("StudentCourses");
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("ProductApp.Entities.Product", b =>
@@ -154,38 +136,20 @@ namespace ProductApp.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("ProductApp.Entities.StudentCourse", b =>
+            modelBuilder.Entity("ProductApp.Entities.Student", b =>
                 {
                     b.HasOne("ProductApp.Entities.Course", "Course")
-                        .WithMany("StudentCourses")
+                        .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProductApp.Entities.Student", "Student")
-                        .WithMany("StudentCourses")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Course");
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("ProductApp.Entities.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("ProductApp.Entities.Course", b =>
-                {
-                    b.Navigation("StudentCourses");
-                });
-
-            modelBuilder.Entity("ProductApp.Entities.Student", b =>
-                {
-                    b.Navigation("StudentCourses");
                 });
 #pragma warning restore 612, 618
         }

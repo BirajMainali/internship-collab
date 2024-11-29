@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ProductApp.DTOs;
 using ProductApp.Repositories.Interfaces;
 using ProductApp.Services.Interfaces;
@@ -8,14 +9,16 @@ namespace ProductApp.Controllers;
 
 public class StudentController : Controller
 {
+    private readonly ICourseRepo _courseRepo;
     private readonly IStudentRepo _studentRepo;
     private readonly IStudentService _studentService;
 
     // constructor
-    public StudentController(IStudentRepo studentRepo, IStudentService studentService)
+    public StudentController(IStudentRepo studentRepo, IStudentService studentService, ICourseRepo courseRepo)
     {
         _studentRepo = studentRepo;
         _studentService = studentService;
+        _courseRepo = courseRepo;
     }
 
     // GET: student/index
@@ -35,23 +38,39 @@ public class StudentController : Controller
     }
 
     // GET: student/create
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        return View();
+        var courses = await _courseRepo.GetAllAsync();
+
+        var vm = new StudentVm
+        {
+            Courses = new SelectList(courses, "Id", "Title"),
+            Name = "",
+            Email = "",
+            Address = ""
+        };
+
+        return View(vm);
     }
 
     // POST: student/create
     [HttpPost]
     public async Task<IActionResult> Create(StudentVm vm)
     {
-        if (!ModelState.IsValid) return View(vm);
+        if (!ModelState.IsValid)
+        {
+            // Repopulate dropdown if validation fails
+            var courses = await _courseRepo.GetAllAsync();
+            vm.Courses = new SelectList(courses, "Id", "Title");
+            return View(vm);
+        }
 
         var dto = new StudentDto
         {
-            Id = vm.Id,
             Name = vm.Name,
             Email = vm.Email,
-            Address = vm.Address
+            Address = vm.Address,
+            CourseId = vm.CourseId
         };
 
         await _studentService.AddAsync(dto);
