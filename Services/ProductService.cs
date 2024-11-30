@@ -1,4 +1,5 @@
-﻿using ProductApp.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using ProductApp.Data;
 using ProductApp.Dto;
 using ProductApp.Entities;
 using ProductApp.Services.Interfaces;
@@ -32,16 +33,20 @@ public class ProductService: IProductService
 
     public async Task Edit(ProductDto dto)
     {
+        var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == dto.Id);
+        product.Name = dto.Name;
+        product.Price = dto.Price;
+        product.CategoryId = dto.CategoryId;
+        product.Description = dto.Description;
 
-        var product = await _context.Products.FindAsync(dto.Id);
-            
-            product.Name = dto.Name;
-            product.Price = dto.Price;
-            product.CategoryId = dto.CategoryId;
-            product.Description = dto.Description;
-            
-            _context.Products.Update(product);
-            await _context.SaveChangesAsync();
-        
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task Delete(long id)
+    {
+        var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+        _context.Products.Remove(product);
+
+        await _context.SaveChangesAsync();
     }
 }

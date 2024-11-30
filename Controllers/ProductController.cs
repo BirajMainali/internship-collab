@@ -22,13 +22,14 @@ public class ProductController : Controller
         IProductService productService,
         IProductRepository productRepository,
         ICategoryRepository categoryRepository
-        )
+    )
     {
         _context = context;
         _productService = productService;
         _productRepository = productRepository;
         _categoryRepository = categoryRepository;
     }
+
     public IActionResult Index()
     {
         var dto = _productRepository.GetAll();
@@ -51,7 +52,7 @@ public class ProductController : Controller
     }
 
     [HttpPost]
-    public IActionResult Create(ProductVm vm)
+    public async Task<IActionResult> Create(ProductVm vm)
     {
         if (!ModelState.IsValid) return View(vm);
         var dto = new ProductDto()
@@ -61,9 +62,10 @@ public class ProductController : Controller
             Price = vm.Price,
             CategoryId = vm.CategoryId
         };
-        _productService.Create(dto);
-        return RedirectToAction("Index");
+            await _productService.Create(dto);
+            return RedirectToAction("Index");
     }
+
 
     public IActionResult Edit(long id)
     {
@@ -74,17 +76,18 @@ public class ProductController : Controller
             Value = c.Id.ToString(),
             Text = c.Name
         }).ToList();
-       
+
         dto.Categories = categories;
-        
+
         return View(dto);
     }
 
     [HttpPost]
-    public IActionResult Edit(long id,ProductVm vm)
+    public async Task<IActionResult> Edit(long id, ProductVm vm)
     {
         if (!ModelState.IsValid) return View();
-        var dto = new ProductDto()
+
+        var dto = new ProductDto
         {
             Id = id,
             Name = vm.Name,
@@ -92,9 +95,17 @@ public class ProductController : Controller
             Price = vm.Price,
             CategoryId = vm.CategoryId
         };
-        _productService.Edit(dto);
+
+        await _productService.Edit(dto);
+
         return RedirectToAction("Index");
     }
-    
-    
+
+    public async Task<IActionResult> Delete(long id)
+    {
+        var dto = _productRepository.GetById(id);
+        if (dto == null) return RedirectToAction("Index");
+        await _productService.Delete(id);
+        return RedirectToAction("Index");
+    }
 }

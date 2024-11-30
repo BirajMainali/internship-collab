@@ -6,5 +6,6 @@ public interface IProductService
 {
     public Task Create(ProductDto dto);
     public Task Edit(ProductDto dto);
+    public Task Delete(long id);
 
 }

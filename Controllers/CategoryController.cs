@@ -33,18 +33,23 @@ public class CategoryController : Controller
     }
 
     [HttpPost]
-    public IActionResult Create(CategoryVm vm)
+    public async Task<IActionResult> Create(CategoryVm vm)
     {
-        if (!ModelState.IsValid) return View(vm);
+        if (!ModelState.IsValid)
+        {
+            return View(vm);
+        }
         var dto = new CategoryDto()
         {
             Name = vm.Name,
             Description = vm.Description
         };
-        _categoryService.Create(dto);
-
-        return RedirectToAction("Index");
+            await _categoryService.Create(dto);
+            return RedirectToAction("Index");
+        
+        
     }
+
 
     public IActionResult Edit(long id)
     {
