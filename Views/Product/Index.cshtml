@@ -1,0 +1,36 @@
+﻿@model List<ProductApp.Dto.ProductDto>
+
+@{
+    ViewBag.Title = "Product List";
+    Layout = "_Layout";
+    var categoryLookup = ViewBag.CategoryLookup as Dictionary<long, string>;
+}
+
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@(categoryLookup.ContainsKey(item.CategoryId) ? categoryLookup[item.CategoryId] : "Unknown") </td>
+            <td>@item.Price.ToString()</td> 
+            <td>@item.Description</td>
+            <td>
+                <a class="btn btn-warning" asp-controller="Product" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

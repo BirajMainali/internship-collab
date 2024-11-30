@@ -8,7 +8,7 @@ namespace ProductApp.Controllers;
 
 public class CategoryController : Controller
 {
-    public ICategoryService CategoryService { get; }
+    public ICategoryService _categoryService { get; }
     public ICategoryRepository _categoryRepository { get; }
 
     public CategoryController
@@ -17,7 +17,7 @@ public class CategoryController : Controller
         ICategoryRepository categoryRepository
     )
     {
-        CategoryService = categoryService;
+        _categoryService = categoryService;
         _categoryRepository = categoryRepository;
     }
 
@@ -35,13 +35,13 @@ public class CategoryController : Controller
     [HttpPost]
     public IActionResult Create(CategoryVm vm)
     {
-        if (!ModelState.IsValid) return View();
+        if (!ModelState.IsValid) return View(vm);
         var dto = new CategoryDto()
         {
             Name = vm.Name,
             Description = vm.Description
         };
-        CategoryService.Create(dto);
+        _categoryService.Create(dto);
 
         return RedirectToAction("Index");
     }
@@ -53,17 +53,23 @@ public class CategoryController : Controller
         return View(dto);
     }
     [HttpPost]
-    public IActionResult Edit(CategoryDto dto)
+    public IActionResult Edit(long id ,CategoryVm vm)
     {
+        var dto = new CategoryDto()
+        {
+            Id = id,
+            Name = vm.Name,
+            Description = vm.Description
+        };
         
-        CategoryService.Edit(dto);
+        _categoryService.Edit(dto);
         return RedirectToAction("Index");
     }
     public IActionResult Delete(long id)
     {
         var dto = _categoryRepository.GetById(id);
         if (dto == null) return RedirectToAction("Index");
-        CategoryService.Delete(id);
+        _categoryService.Delete(id);
         return RedirectToAction("Index");
     }
     
