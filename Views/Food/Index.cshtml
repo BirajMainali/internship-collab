@@ -1,0 +1,50 @@
+﻿@model List<ProductApp.Dto.FoodDto>
+
+@{
+    ViewBag.Title = "Food List";
+    Layout = "_Layout";
+    var categoryLookup = ViewBag.CategoryLookup as Dictionary<long, string>;
+
+}
+
+<div class="container my-4">
+    <h2 class="text-center mb-4">@ViewBag.Title</h2>
+    <a class="btn btn-success m" asp-controller="Food" asp-action="Create">
+        + Add
+    </a>
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            <strong>No categories available.</strong>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <td>Category</td>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Description</td>
+                        <td>@(categoryLookup.ContainsKey(item.CategoryId) ? categoryLookup[item.CategoryId] : "Unknown") </td>
+                        <td>
+                            <a class="btn btn-warning" asp-controller="Food" asp-action="Edit" asp-route-id="@item.Id">Update</a>
+                            <a class="btn btn-danger" asp-controller="Food" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
