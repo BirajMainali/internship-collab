@@ -1,0 +1,13 @@
+﻿@model ProductApp.Dto.CategoryDto
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>title</h2>
+<form method="post">
+    <input type="text" asp-for="Name" />
+    <input type="text" asp-for="Description"/>
+    <button type="submit">Save</button>
+</form>
