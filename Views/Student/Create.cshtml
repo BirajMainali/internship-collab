@@ -1,4 +1,4 @@
-﻿@model ProductApp.ViewModels.StudentVm
+﻿@model ProductApp.ViewModels.StudentCreateVm
 
 @{
     ViewData["Title"] = "Create Student";
@@ -27,7 +27,17 @@
 
     <div class="form-group mb-4">
         <label asp-for="CourseId">Course</label>
-        <select asp-for="CourseId" asp-items="Model.Courses" class="form-control"></select>
+
+        <div class="d-flex align-items-center gap-4">
+            <select asp-for="CourseId" asp-items="Model.Courses"
+                    class="form-control">
+                <option value=" ">-- Select a category --</option>
+            </select>
+            <a class="btn btn-secondary" asp-action="Create" asp-controller="Course"
+               asp-route-returnUrl="@Url.Action("Create", "Student")" style="white-space: 
+            nowrap">Add Course</a>
+        </div>
+
         <span asp-validation-for="CourseId" class="text-danger"></span>
     </div>
 

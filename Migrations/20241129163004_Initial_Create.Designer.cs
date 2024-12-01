@@ -10,7 +10,7 @@ using ProductApp.Data;
 
 namespace ProductApp.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20241129163004_Initial_Create")]
     partial class Initial_Create
     {

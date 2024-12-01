@@ -3,10 +3,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ProductApp.ViewModels;
 
-public class StudentVm
+public class StudentCreateVm
 {
-    public long Id { get; set; }
-
     [Required] public string Name { get; set; }
 
     [Required] [EmailAddress] public string Email { get; set; }

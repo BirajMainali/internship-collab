@@ -25,13 +25,21 @@ public class StudentController : Controller
     public async Task<IActionResult> Index()
     {
         var students = await _studentRepo.GetAllAsync();
+        var courses = await _courseRepo.GetAllAsync();
 
         var studentVms = students.Select(student => new StudentVm
         {
             Id = student.Id,
             Name = student.Name,
             Email = student.Email,
-            Address = student.Address
+            Address = student.Address,
+            CourseId = student.CourseId,
+            Courses = courses.Where(course => course.Id == student.CourseId)
+                .Select(course => new SelectListItem
+                {
+                    Value = course.Id.ToString(),
+                    Text = course.Title
+                }).ToList()
         }).ToList();
 
         return View(studentVms);
@@ -42,12 +50,14 @@ public class StudentController : Controller
     {
         var courses = await _courseRepo.GetAllAsync();
 
-        var vm = new StudentVm
+        var vm = new StudentCreateVm
         {
-            Courses = new SelectList(courses, "Id", "Title"),
-            Name = "",
-            Email = "",
-            Address = ""
+            Courses = courses.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Title
+                })
+                .ToList()
         };
 
         return View(vm);
@@ -55,13 +65,17 @@ public class StudentController : Controller
 
     // POST: student/create
     [HttpPost]
-    public async Task<IActionResult> Create(StudentVm vm)
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(StudentCreateVm vm)
     {
         if (!ModelState.IsValid)
         {
             // Repopulate dropdown if validation fails
-            var courses = await _courseRepo.GetAllAsync();
-            vm.Courses = new SelectList(courses, "Id", "Title");
+            vm.Courses = (await _courseRepo.GetAllAsync()).Select(course => new SelectListItem
+            {
+                Value = course.Id.ToString(),
+                Text = course.Title
+            }).ToList();
             return View(vm);
         }
 
@@ -88,7 +102,8 @@ public class StudentController : Controller
             Id = student.Id,
             Name = student.Name,
             Email = student.Email,
-            Address = student.Address
+            Address = student.Address,
+            CourseId = student.CourseId
         };
 
         return View(vm);
@@ -96,6 +111,7 @@ public class StudentController : Controller
 
     // POST: student/edit
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(StudentVm vm)
     {
         if (!ModelState.IsValid) return View(vm);
@@ -105,7 +121,8 @@ public class StudentController : Controller
             Id = vm.Id,
             Name = vm.Name,
             Address = vm.Address,
-            Email = vm.Email
+            Email = vm.Email,
+            CourseId = vm.CourseId
         };
 
         await _studentService.UpdateAsync(dto);
@@ -118,12 +135,22 @@ public class StudentController : Controller
         var student = await _studentRepo.GetByIdAsync(id);
         if (student == null) return RedirectToAction(nameof(Index));
 
-        return View(student);
+        var vm = new StudentVm
+        {
+            Id = student.Id,
+            Name = student.Name,
+            Email = student.Email,
+            Address = student.Address,
+            CourseId = student.CourseId
+        };
+
+        return View(vm);
     }
 
-    // POST: student/edit
+    // POST: student/delete
     [HttpPost]
     [ActionName("Delete")]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(long id)
     {
         await _studentService.DeleteAsync(id);

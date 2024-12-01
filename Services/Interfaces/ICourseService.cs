@@ -1,4 +1,4 @@
-﻿using ProductApp.DTOs;
+﻿using ProductApp.Dtos;
 
 namespace ProductApp.Services.Interfaces;
 

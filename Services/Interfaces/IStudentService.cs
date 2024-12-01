@@ -1,5 +1,4 @@
 ﻿using ProductApp.DTOs;
-using ProductApp.ViewModels;
 
 namespace ProductApp.Services.Interfaces;
 

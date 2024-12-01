@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
 using ProductApp.Data;
 using ProductApp.Entities;
 using ProductApp.Repositories.Interfaces;
@@ -8,9 +7,9 @@ namespace ProductApp.Repositories;
 
 public class CourseRepo : ICourseRepo
 {
-    private readonly ApplicationDbContext _context;
+    private readonly AppDbContext _context;
 
-    public CourseRepo(ApplicationDbContext context)
+    public CourseRepo(AppDbContext context)
     {
         _context = context;
     }

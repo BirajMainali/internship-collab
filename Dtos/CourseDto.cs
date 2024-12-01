@@ -1,4 +1,4 @@
-﻿namespace ProductApp.DTOs;
+﻿namespace ProductApp.Dtos;
 
 public class CourseDto
 {

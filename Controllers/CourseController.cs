@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProductApp.Dtos;
 using ProductApp.DTOs;
-using ProductApp.Entities;
 using ProductApp.Repositories.Interfaces;
 using ProductApp.Services.Interfaces;
 using ProductApp.ViewModels;
@@ -19,7 +19,7 @@ public class CourseController : Controller
         _courseService = courseService;
     }
 
-    // Course/Index
+    // GET: Course/Index
     public async Task<IActionResult> Index()
     {
         var courses = await _courseRepo.GetAllAsync();
@@ -35,14 +35,15 @@ public class CourseController : Controller
     }
 
     // GET: Course/Create
-    public IActionResult Create()
+    public IActionResult Create(string? returnUrl)
     {
+        ViewData["ReturnUrl"] = returnUrl;
         return View();
     }
 
     // POST: course/create
     [HttpPost]
-    public async Task<IActionResult> Create(CourseVm vm)
+    public async Task<IActionResult> Create(CourseVm vm, string? returnUrl)
     {
         if (!ModelState.IsValid) return View(vm);
 
@@ -53,6 +54,10 @@ public class CourseController : Controller
         };
 
         await _courseService.AddAsync(dto);
+
+        // Redirect back if returnUrl is provided; otherwise, go to Course Index
+        if (!string.IsNullOrEmpty(returnUrl)) return Redirect(returnUrl);
+
         return RedirectToAction(nameof(Index));
     }
 
@@ -60,7 +65,6 @@ public class CourseController : Controller
     public async Task<IActionResult> Edit(long id)
     {
         var course = await _courseRepo.GetByIdAsync(id);
-        if (course == null) return RedirectToAction(nameof(Index));
 
         var vm = new CourseVm
         {
@@ -91,8 +95,6 @@ public class CourseController : Controller
     public async Task<IActionResult> Delete(long id)
     {
         var course = await _courseRepo.GetByIdAsync(id);
-        if (course == null) return RedirectToAction(nameof(Index));
-
         return View(course);
     }
 

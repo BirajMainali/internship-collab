@@ -3,6 +3,7 @@
 <h1 class="display-5 mb-4">Add New Course</h1>
 
 <form asp-action="Create" method="post" class=" w-75">
+    @Html.Hidden("returnUrl", ViewData["ReturnUrl"] as string)
     <div class="form-group">
         <label asp-for="Title">Course Title</label>
         <input asp-for="Title" class="form-control"/>
@@ -16,4 +17,4 @@
     </div>
 
     <button type="submit" class="btn btn-success my-4">Save</button>
-</form>
+</form> 

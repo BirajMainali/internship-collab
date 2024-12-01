@@ -7,9 +7,9 @@ namespace ProductApp.Services;
 
 public class StudentService : IStudentService
 {
-    private readonly ApplicationDbContext _context;
+    private readonly AppDbContext _context;
 
-    public StudentService(ApplicationDbContext context)
+    public StudentService(AppDbContext context)
     {
         _context = context;
     }
@@ -17,11 +17,12 @@ public class StudentService : IStudentService
     // create student
     public async Task AddAsync(StudentDto dto)
     {
-        var student = new Student()
+        var student = new Student
         {
             Name = dto.Name,
             Email = dto.Email,
-            Address = dto.Address
+            Address = dto.Address,
+            CourseId = dto.CourseId
         };
 
         _context.Students.Add(student);
@@ -38,6 +39,7 @@ public class StudentService : IStudentService
             student.Name = dto.Name;
             student.Email = dto.Email;
             student.Address = dto.Address;
+            student.CourseId = dto.CourseId;
 
             _context.Students.Update(student);
             await _context.SaveChangesAsync();

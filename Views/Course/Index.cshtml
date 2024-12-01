@@ -1,24 +1,27 @@
 ﻿@model IEnumerable<ProductApp.ViewModels.CourseVm>
 
-<h1>Courses</h1>
+<h1 class="display-5 mb-4">List of Courses</h1>
 
-<a asp-action="Create" class="btn btn-primary">Add New Course</a>
+<a asp-action="Create" class="btn btn-primary mb-4">+ New Course</a>
 
-<table class="table">
+<table class="table table-striped border">
     <thead>
     <tr>
-        <th>Name</th>
+        <th>Course Title</th>
+        <th>Course Code</th>
         <th>Actions</th>
     </tr>
     </thead>
+
     <tbody>
     @foreach (var course in Model)
     {
         <tr>
             <td>@course.Title</td>
+            <td>@course.Code</td>
             <td>
-                <a asp-action="Edit" asp-route-id="@course.Id" class="btn btn-warning">Edit</a>
-                <a asp-action="Delete" asp-route-id="@course.Id" class="btn btn-danger">Delete</a>
+                <a asp-action="Edit" asp-route-id="@course.Id" class="btn-sm btn-warning">Edit</a>
+                <a asp-action="Delete" asp-route-id="@course.Id" class="btn-sm btn-danger">Delete</a>
             </td>
         </tr>
     }

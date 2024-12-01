@@ -7,9 +7,9 @@ namespace ProductApp.Repositories;
 
 public class StudentRepo : IStudentRepo
 {
-    private readonly ApplicationDbContext _context;
+    private readonly AppDbContext _context;
 
-    public StudentRepo(ApplicationDbContext context)
+    public StudentRepo(AppDbContext context)
     {
         _context = context;
     }

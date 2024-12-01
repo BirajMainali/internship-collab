@@ -1,4 +1,5 @@
 ﻿using ProductApp.Data;
+using ProductApp.Dtos;
 using ProductApp.DTOs;
 using ProductApp.Entities;
 using ProductApp.Services.Interfaces;
@@ -7,9 +8,9 @@ namespace ProductApp.Services;
 
 public class CourseService : ICourseService
 {
-    private readonly ApplicationDbContext _context;
+    private readonly AppDbContext _context;
 
-    public CourseService(ApplicationDbContext context)
+    public CourseService(AppDbContext context)
     {
         _context = context;
     }
