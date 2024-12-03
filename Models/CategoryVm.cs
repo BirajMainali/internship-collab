@@ -1,8 +1,10 @@
-﻿namespace ProductApp.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ProductApp.Models;
 
 public class CategoryVm
 {
-    public long Id;
+    [Required]
     public string Name { get; set; }
     public string Description { get; set; }
 }

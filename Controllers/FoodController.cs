@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Immutable;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProductApp.Data;
@@ -12,13 +13,12 @@ namespace ProductApp.Controllers;
 
 public class FoodController : Controller
 {
-    public IFoodService _foodService { get; }
-    public IFoodRepository _FoodRepository { get; }
-    public ICategoryRepository _categoryRepository { get; }
-    public ApplicationDbContext _context;
+    private readonly IFoodService _foodService;
+    private readonly IFoodRepository _FoodRepository;
+    private readonly ICategoryRepository _categoryRepository;
 
     public FoodController(
-        ApplicationDbContext context,
+       
         IFoodService foodService, 
         IFoodRepository foodRepository,
         ICategoryRepository categoryRepository
@@ -27,25 +27,30 @@ public class FoodController : Controller
         _foodService = foodService;
         _FoodRepository = foodRepository;
         _categoryRepository = categoryRepository;
-        _context = context;
     }
 
     public IActionResult Index()
     {
-        var dto = _FoodRepository.GetAll();
+        var foods = _FoodRepository.GetAll();
+        
         var categories = _categoryRepository.GetAll();
-        var categoryLookup = categories.ToDictionary(c => c.Id, c => c.Name);
-        ViewBag.CategoryLookup = categoryLookup;
-        return View(dto);
+        var vm = foods.Select(food => new FoodListVm
+        {
+            Id = food.Id,
+            Name = food.Name,
+            Description = food.Description,
+            CategoryId= food.CategoryId,
+            Category = categories.FirstOrDefault(c => c.Id == food.CategoryId)?.Name,
+        }).ToList();
+        
+
+        
+        return View(vm);
     }
 
     public IActionResult Create()
     {
-        var categories = _context.Categories.Select(c => new SelectListItem
-        {
-            Value = c.Id.ToString(),
-            Text = c.Name
-        }).ToList();
+        var categories = _categoryRepository.GetCategories();
         var vm = new FoodVm();
         vm.Categories = categories;
         return View(vm);
@@ -66,19 +71,13 @@ public class FoodController : Controller
         return RedirectToAction("Index");
     }
 
-    public decimal Price { get; set; }
-
-    public long Name { get; set; }
+    
 
     public IActionResult Edit(int id)
     {
         var dto = _FoodRepository.GetById(id);
         if(dto == null)return RedirectToAction("Index");
-        var categories = _context.Categories.Select(c => new SelectListItem
-        {
-            Value = c.Id.ToString(),
-            Text = c.Name
-        }).ToList();
+        var categories = _categoryRepository.GetCategories();
 
         dto.Categories = categories;
         return View(dto);
@@ -102,11 +101,7 @@ public class FoodController : Controller
 
     }
 
-    public long Id { get; set; }
-
-    public long CategoryId { get; set; }
-
-    public string Description { get; set; }
+    
 
     public IActionResult Delete(long id)
     {

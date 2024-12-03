@@ -15,7 +15,7 @@ public class FoodService: IFoodService
         _context = context;
     }
     
-    public async Task Create(FoodDto dto)
+    public async Task<Food> Create(FoodDto dto)
     {
         var food = new Food();
         food.Name = dto.Name;
@@ -24,6 +24,8 @@ public class FoodService: IFoodService
         food.CategoryId = dto.CategoryId;
         _context.Foods.Add(food);
         await _context.SaveChangesAsync();
+
+        return food;
     }
 
     public void Edit(FoodDto dto)

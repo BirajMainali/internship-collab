@@ -5,7 +5,8 @@ namespace ProductApp.Repositories.Interfaces;
 
 public interface IFoodRepository
 {
-    List<FoodDto> GetAll();
+    List<Food> GetAll();
     FoodDto GetById(long id);
+    
 
 }

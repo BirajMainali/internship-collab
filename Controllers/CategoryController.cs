@@ -8,9 +8,8 @@ namespace ProductApp.Controllers;
 
 public class CategoryController : Controller
 {
-    public ICategoryService _categoryService { get; }
-    public ICategoryRepository _categoryRepository { get; }
-
+    private readonly ICategoryService _categoryService;
+    private readonly ICategoryRepository _categoryRepository;
     public CategoryController(ICategoryService categoryService,ICategoryRepository categoryRepository)
     {
         _categoryService = categoryService;
@@ -45,13 +44,23 @@ public class CategoryController : Controller
      {
          var dto = _categoryRepository.GetById(id);
          if (dto == null) return RedirectToAction("Index");
-         return View (dto);
+         var vm = new CategoryEditVm()
+         {
+             Id = dto.Id,
+             Name = dto.Name,
+             Description = dto.Description
+
+         };
+         return View (vm);
          
      }
     
      [HttpPost]
-     public IActionResult Edit(long id, CategoryVm vm)
+     public IActionResult Edit(long id, CategoryEditVm vm)
     {
+        if (!ModelState.IsValid) return View(vm);
+        var category = _categoryRepository.GetById(id);
+        if (category == null) return RedirectToAction("Index");
        
          var dto = new CategoryDto()
          {

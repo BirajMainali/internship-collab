@@ -1,5 +1,7 @@
-﻿using ProductApp.Data;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using ProductApp.Data;
 using ProductApp.Dto;
+using ProductApp.Entities;
 using ProductApp.Repositories.Interfaces;
 
 namespace ProductApp.Repositories;
@@ -13,18 +15,10 @@ public class FoodRepository:IFoodRepository
         _context = context;
     }
 
-    public List<FoodDto> GetAll()
+    public List<Food> GetAll()
     {
-        var dto = _context.Foods.Select(x => new FoodDto
-        {
-            Id = x.Id,
-            Name = x.Name,
-            Price = x.Price,
-            Description = x.Description,
-            CategoryId = x.CategoryId
+        return _context.Foods.ToList();
 
-        }).ToList();
-        return dto;
 
 
 
@@ -45,4 +39,6 @@ public class FoodRepository:IFoodRepository
         return dto;
         
     }
+
+    
 }

@@ -1,4 +1,4 @@
-﻿@model List<ProductApp.Dto.FoodDto>
+﻿@model List<FoodListVm>
 
 @{
     ViewBag.Title = "Food List";
@@ -36,7 +36,7 @@
                     <tr>
                         <td>@item.Name</td>
                         <td>@item.Description</td>
-                        <td>@(categoryLookup.ContainsKey(item.CategoryId) ? categoryLookup[item.CategoryId] : "Unknown") </td>
+                        <td>@item.Category</td>
                         <td>
                             <a class="btn btn-warning" asp-controller="Food" asp-action="Edit" asp-route-id="@item.Id">Update</a>
                             <a class="btn btn-danger" asp-controller="Food" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
