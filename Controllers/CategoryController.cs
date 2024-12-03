@@ -8,8 +8,8 @@ namespace ProductApp.Controllers;
 
 public class CategoryController : Controller
 {
-    public ICategoryService _categoryService { get; }
-    public ICategoryRepository _categoryRepository { get; }
+    private readonly ICategoryService _categoryService;
+    private readonly ICategoryRepository _categoryRepository;
 
     public CategoryController
     (
@@ -66,7 +66,7 @@ public class CategoryController : Controller
             Name = vm.Name,
             Description = vm.Description
         };
-        
+        if(!ModelState.IsValid) return View(dto);
         _categoryService.Edit(dto);
         return RedirectToAction("Index");
     }

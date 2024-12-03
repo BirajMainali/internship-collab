@@ -32,7 +32,7 @@ public class ProductRepository: IProductRepository
 
     public ProductDto GetById(long id)
     {
-        var product = _context.Products.FirstOrDefault(x => x.Id == id);
+        var product = _context.Products.Find(id);
         var dto = new ProductDto()
         {
             Id = product.Id,

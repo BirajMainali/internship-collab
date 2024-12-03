@@ -8,7 +8,7 @@ namespace ProductApp.Services;
 
 public class ProductService: IProductService
 {
-    public ApplicationDbContext _context;
+    private readonly ApplicationDbContext _context;
 
     public ProductService(ApplicationDbContext context)
     {
@@ -44,7 +44,7 @@ public class ProductService: IProductService
 
     public async Task Delete(long id)
     {
-        var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+        var product = await _context.Products.FindAsync( id);
         _context.Products.Remove(product);
 
         await _context.SaveChangesAsync();

@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ProductApp.Models;
 
-public class ProductVm
+public class ProductEditVm
 {
+    public long Id { get; set; }
     [Required]
     public string Name { get; set; }
     [Required]

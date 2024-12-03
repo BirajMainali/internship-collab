@@ -1,5 +1,7 @@
-﻿using ProductApp.Data;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using ProductApp.Data;
 using ProductApp.Dto;
+using ProductApp.Entities;
 using ProductApp.Repositories.Interfaces;
 
 namespace ProductApp.Repositories;
@@ -33,5 +35,16 @@ public class CategoryRepository : ICategoryRepository
             Description = x.Description
         }).FirstOrDefault();
         return dto;
+    }
+
+    public List<SelectListItem> GetCategories()
+    {
+       var category= _context.Categories.Select(c => new SelectListItem
+        {
+            Value = c.Id.ToString(),
+            Text = c.Name
+        }).ToList();
+       return category;
+        
     }
 }

@@ -12,19 +12,16 @@ namespace ProductApp.Controllers;
 
 public class ProductController : Controller
 {
-    public ApplicationDbContext _context;
-    public IProductService _productService { get; }
-    public IProductRepository _productRepository { get; }
-    public ICategoryRepository _categoryRepository { get; }
+    private readonly IProductService _productService;
+    private readonly IProductRepository _productRepository;
+    private readonly ICategoryRepository _categoryRepository;
 
     public ProductController(
-        ApplicationDbContext context,
         IProductService productService,
         IProductRepository productRepository,
         ICategoryRepository categoryRepository
     )
     {
-        _context = context;
         _productService = productService;
         _productRepository = productRepository;
         _categoryRepository = categoryRepository;
@@ -32,29 +29,40 @@ public class ProductController : Controller
 
     public IActionResult Index()
     {
-        var dto = _productRepository.GetAll();
+        var products = _productRepository.GetAll();
         var categories = _categoryRepository.GetAll();
-        var categoryLookup = categories.ToDictionary(c => c.Id, c => c.Name);
-        ViewBag.CategoryLookup = categoryLookup;
-        return View(dto);
+
+        var vm = products.Select(product => new ProductListVm
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Price = product.Price,
+            Description = product.Description,
+            CategoryId = product.CategoryId,
+            Category = categories.FirstOrDefault(category => category.Id == product.CategoryId)?.Name,
+            
+           
+        }).ToList();
+
+        return View(vm);
     }
+
 
     public IActionResult Create()
     {
-        var categories = _context.Categories.Select(c => new SelectListItem
-        {
-            Value = c.Id.ToString(),
-            Text = c.Name
-        }).ToList();
         var vm = new ProductVm();
-        vm.Categories = categories;
+        vm.Categories = _categoryRepository.GetCategories();
         return View(vm);
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(ProductVm vm)
     {
-        if (!ModelState.IsValid) return View(vm);
+        if (!ModelState.IsValid)
+        {
+            vm.Categories = _categoryRepository.GetCategories();
+            return View(vm);
+        }
         var dto = new ProductDto()
         {
             Name = vm.Name,
@@ -71,22 +79,32 @@ public class ProductController : Controller
     {
         var dto = _productRepository.GetById(id);
         if (dto == null) return RedirectToAction("Index");
-        var categories = _context.Categories.Select(c => new SelectListItem
+        var categories = _categoryRepository.GetCategories();
+        var vm = new ProductEditVm()
         {
-            Value = c.Id.ToString(),
-            Text = c.Name
-        }).ToList();
+            Id = dto.Id,
+            Name = dto.Name,
+            Description = dto.Description,
+            CategoryId = dto.CategoryId,
+            Price = dto.Price,
+            Categories = categories
 
-        dto.Categories = categories;
+        };
+        
 
-        return View(dto);
+        return View(vm);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit(long id, ProductVm vm)
+    public async Task<IActionResult> Edit(long id, ProductEditVm vm)
     {
-        if (!ModelState.IsValid) return View();
+        
 
+        if (!ModelState.IsValid)
+        {
+            vm.Categories = _categoryRepository.GetCategories();
+            return View(vm);
+        }
         var dto = new ProductDto
         {
             Id = id,
