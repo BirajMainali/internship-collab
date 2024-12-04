@@ -14,9 +14,10 @@ public class ProductService: IProductService
     {
         _context = context;
     }
+    //Create product 
     public async  Task Create(ProductDto dto)
     {
-        var product = new Product()
+        var product = new Product()//entity
         {
             Name = dto.Name,
             Price = dto.Price,
@@ -30,10 +31,10 @@ public class ProductService: IProductService
         await _context.SaveChangesAsync();
 
     }
-
+    //Edit Product
     public async Task Edit(ProductDto dto)
     {
-        var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == dto.Id);
+        var product = await _context.Products.FindAsync( dto.Id); 
         product.Name = dto.Name;
         product.Price = dto.Price;
         product.CategoryId = dto.CategoryId;
@@ -41,7 +42,7 @@ public class ProductService: IProductService
 
         await _context.SaveChangesAsync();
     }
-
+    //Delecte product
     public async Task Delete(long id)
     {
         var product = await _context.Products.FindAsync( id);

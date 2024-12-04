@@ -26,12 +26,11 @@ public class ProductController : Controller
         _productRepository = productRepository;
         _categoryRepository = categoryRepository;
     }
-
+    
+    //display all product from DB 
     public IActionResult Index()
     {
-        var products = _productRepository.GetAll();
-        var categories = _categoryRepository.GetAll();
-
+        var products = _productRepository.GetQueryable();
         var vm = products.Select(product => new ProductListVm
         {
             Id = product.Id,
@@ -39,22 +38,21 @@ public class ProductController : Controller
             Price = product.Price,
             Description = product.Description,
             CategoryId = product.CategoryId,
-            Category = categories.FirstOrDefault(category => category.Id == product.CategoryId)?.Name,
-            
-           
+            CategoryName = product.Category.Name,
         }).ToList();
 
         return View(vm);
     }
 
-
+    //provide view to add product
     public IActionResult Create()
     {
         var vm = new ProductVm();
         vm.Categories = _categoryRepository.GetCategories();
         return View(vm);
     }
-
+    
+    //Add product to DB
     [HttpPost]
     public async Task<IActionResult> Create(ProductVm vm)
     {
@@ -64,11 +62,11 @@ public class ProductController : Controller
             return View(vm);
         }
         var dto = new ProductDto()
-        {
+        {                                                     
             Name = vm.Name,
             Description = vm.Description,
             Price = vm.Price,
-            CategoryId = vm.CategoryId
+            CategoryId = (int)vm.CategoryId
         };
             await _productService.Create(dto);
             return RedirectToAction("Index");

@@ -7,13 +7,14 @@ namespace ProductApp.Repositories;
 
 public class ProductRepository: IProductRepository
 {
-    public ApplicationDbContext _context;
+    public ApplicationDbContext _context;        //Field created
 
     public ProductRepository(ApplicationDbContext context)
     {
         _context = context;
     }
-
+    
+    //fetch all the data from Products (CategoryID)
     public List<ProductDto> GetAll()
     {
         
@@ -29,7 +30,13 @@ public class ProductRepository: IProductRepository
         return dto;
         
     }
-
+    //fetch all the data from Products (provide different mapping such category name can be directly use)
+    public IQueryable<Product> GetQueryable()
+    {
+        return _context.Products;
+    }
+    
+    //fetech product through their Id
     public ProductDto GetById(long id)
     {
         var product = _context.Products.Find(id);

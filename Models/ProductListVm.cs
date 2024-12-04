@@ -11,7 +11,6 @@ public class ProductListVm
     public decimal Price { get; set; }
     public long CategoryId { get; set; }
 
-    public string Category { get; set; }
-    public List<SelectListItem> Categories  { get; set; }
+    public string CategoryName { get; set; }
 
 }

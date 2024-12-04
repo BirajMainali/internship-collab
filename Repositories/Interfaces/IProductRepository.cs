@@ -7,4 +7,5 @@ public interface IProductRepository
 {
     List<ProductDto> GetAll();
     ProductDto GetById(long id);
+    IQueryable<Product> GetQueryable();
 }
