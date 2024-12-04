@@ -7,6 +7,8 @@ public interface IFoodRepository
 {
     List<Food> GetAll();
     FoodDto GetById(long id);
-    
+    IQueryable<Food> GetQueryable();
 
+
+   
 }

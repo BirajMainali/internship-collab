@@ -25,20 +25,25 @@ public class FoodRepository:IFoodRepository
 
     }
 
+   
+    public IQueryable<Food> GetQueryable()
+    {
+        return _context.Foods;
+    }
     public FoodDto GetById(long id)
     {
-        var dto = _context.Foods.Where(x => x.Id == id).Select(x => new FoodDto
+        var food = _context.Foods.Find(id);
+        var dto = new FoodDto()
         {
-            Id = x.Id,
-            Name = x.Name,
-            Price = x.Price,
-            Description = x.Description,
-            CategoryId = x.CategoryId
-                
-        }).FirstOrDefault();
+            Id = food.Id,
+            Name = food.Name,
+            Description = food.Description,
+            CategoryId =food.CategoryId,
+            Price = food.Price,
+        };
         return dto;
-        
     }
+
 
     
 }

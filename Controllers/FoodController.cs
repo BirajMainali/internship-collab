@@ -31,7 +31,7 @@ public class FoodController : Controller
 
     public IActionResult Index()
     {
-        var foods = _FoodRepository.GetAll();
+        var foods = _FoodRepository.GetQueryable();
         
         var categories = _categoryRepository.GetAll();
         var vm = foods.Select(food => new FoodListVm
@@ -40,13 +40,16 @@ public class FoodController : Controller
             Name = food.Name,
             Description = food.Description,
             CategoryId= food.CategoryId,
-            Category = categories.FirstOrDefault(c => c.Id == food.CategoryId)?.Name,
+            Category = food.Category.Name,
+
         }).ToList();
         
 
         
         return View(vm);
     }
+
+   
 
     public IActionResult Create()
     {
@@ -59,7 +62,7 @@ public class FoodController : Controller
     [HttpPost]
     public IActionResult Create(FoodVm vm)
     {
-        if(!ModelState.IsValid)return View();
+        if(!ModelState.IsValid)return View(vm);
         var dto = new FoodDto()
         {
             Name = vm.Name,
