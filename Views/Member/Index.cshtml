@@ -1,27 +1,65 @@
-﻿@model List<MemberVm>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using ProductApp.Entities
+@model List<MemberVm>
 
 @{
-    ViewData["Title"] = "Member List";
+    ViewBag.Title = "Member List";
+    Layout = "_Layout";
 }
 
-<h1>Member List</h1>
+<div class="container my-4">
+    <h2 class="text-center mb-4 text-primary">@ViewBag.Title</h2>
 
-<table class="table">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Member Type</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var member in Model)
+    <div class="d-flex justify-content-between mb-3">
+        <a class="btn btn-success" asp-controller="Member" asp-action="Create">
+            <i class="fas fa-plus"></i> Add Member
+        </a>
+        <span class="badge bg-info text-dark">Total Members: @Model.Count</span>
+    </div>
+
+    @if (!Model.Any())
     {
-        <tr>
-            <td>@member.Name</td>
-            <td>@member.Email</td>
-            <td>@member.Membertypes</td>
-        </tr>
+        <div class="alert alert-info text-center">
+            <strong>No members available. Add one to get started!</strong>
+        </div>
     }
-    </tbody>
-</table>
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Member Type</th>
+                        <th scope="col">Type ID</th>
+                        <th scope="col" class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var member in Model)
+                    {
+                        <tr>
+                            <td>@member.Name</td>
+                            <td>@member.Email</td>
+                            <td>@member.MemberTypeName</td>
+                            <td>@member.MemberTypeId</td>
+                            <td class="text-center">
+                                <a class="btn btn-warning btn-sm mx-1" asp-controller="Member" asp-action="Edit" asp-route-id="@member">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <a class="btn btn-danger btn-sm mx-1" asp-controller="Member" asp-action="Delete" asp-route-id="@member" onclick="return confirm('Are you sure you want to delete this member?');">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+}

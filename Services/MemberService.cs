@@ -20,8 +20,8 @@ public class MemberService: IMemberService
         var member = new Member()
         {
             Name = dto.Name,
-            Email = dto.Email,
-            //MemberType = dto.MemberTypeName,
+            Email = dto.Email,  
+            MemberTypeName = dto.MemberTypeName,
             MemberTypeId =   dto.MemberTypeId
 
         };
@@ -32,11 +32,11 @@ public class MemberService: IMemberService
 
     public async Task Edit(MemberDto dto)
     {
-        var member = await _context.Members.FirstOrDefaultAsync(p => p.Id == dto.Id);
+        var member = await _context.Members.FirstOrDefaultAsync(m => m.Id == dto.Id);
         member.Name = dto.Name;
         member.Email= dto.Email;
         member.MemberTypeId = dto.MemberTypeId;
-       // member.MemberTypeName = dto.MemberTypeName;
+        member.MemberTypeName = dto.MemberTypeName;
 
         await _context.SaveChangesAsync();
     }

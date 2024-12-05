@@ -26,18 +26,15 @@ public class MemberController : Controller
 
     public IActionResult Index()
     {
-        var members = _memberRepository.GetAll();
-        var membertypes = _membertypesRepository.GetAll();
-
+        var members = _memberRepository.GetQueryable();
+       
         var vm = members.Select(member => new MemberVm
         {
-            Name = Member.Name,
-            Email = Member.Email,
-            //MemberTypeName = Member.MemberTypename,
-            MemberTypeId = Member.MemberTypeId,
-            Membertypes = membertypes.FirstOrDefault(Membertypes => Membertypes.Id == members.MemberTypeId)?.Name,
-            
-           
+            Name = member.Name,
+            Email = member.Email,
+            MemberTypeName = member.MemberTypeName,
+            MemberTypeId = member.MemberTypeId,
+
         }).ToList();
 
         return View(vm);
@@ -64,7 +61,7 @@ public class MemberController : Controller
             Name = vm.Name,
             Email = vm.Email,
             MemberTypeName = vm.MemberTypeName,
-            MemberTypeId = vm.MemberTypeId
+            MemberTypeId = (int)vm.MemberTypeId
         };
             await _memberService.Create(dto);
             return RedirectToAction("Index");
@@ -78,7 +75,7 @@ public class MemberController : Controller
         var Membertypes = _membertypesRepository.GetMembertypes();
         var vm = new MemberVm()
         {
-            //Id = dto.Id,
+            Id = dto.Id,
             Name = dto.Name,
             Email = dto.Email,
             MemberTypeId = dto.MemberTypeId,
@@ -86,7 +83,6 @@ public class MemberController : Controller
             Membertypes  = Membertypes
 
         };
-        
 
         return View(vm);
     }
