@@ -33,7 +33,6 @@ public class FoodController : Controller
     {
         var foods = _FoodRepository.GetQueryable();
         
-        var categories = _categoryRepository.GetAll();
         var vm = foods.Select(food => new FoodListVm
         {
             Id = food.Id,

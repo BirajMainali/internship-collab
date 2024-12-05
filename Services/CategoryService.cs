@@ -38,7 +38,17 @@ public class CategoryService:ICategoryService
 
     public void Delete(long id)
     {
-        var category = _context.Categories.FirstOrDefault(categories=>categories.Id==id);
+        var foods=_context.Foods.Any(f=>f.CategoryId==id);
+        if (foods)
+        {
+            throw new InvalidOperationException("cannot delete category because it is associated with food ");
+        }
+        
+        var category = _context.Categories.Find(id);
+        if (category == null)
+        {
+            throw new KeyNotFoundException("category not found ");
+        }
         _context.Categories.Remove(category);
         _context.SaveChanges();
     }

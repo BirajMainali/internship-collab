@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq.Expressions;
+using Microsoft.AspNetCore.Mvc;
 using ProductApp.Dto;
 using ProductApp.Models;
 using ProductApp.Repositories.Interfaces;
@@ -75,8 +76,23 @@ public class CategoryController : Controller
      public IActionResult Delete(long id)
      {
        var dto = _categoryRepository.GetById(id);
-       if (dto == null) return RedirectToAction("Index");
-       _categoryService.Delete(id);
+
+       if (dto == null)
+       {
+           TempData["error"] = "Category not found";
+           return RedirectToAction("Index");
+       }
+
+       try
+       {
+
+           _categoryService.Delete(id);
+           TempData["success"] = "Category deleted";
+       }
+       catch (InvalidOperationException ex)
+       {
+           TempData["error"] = ex.Message;
+       }
         return RedirectToAction("Index");
       }
     

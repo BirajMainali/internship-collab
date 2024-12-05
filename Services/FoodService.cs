@@ -30,7 +30,7 @@ public class FoodService: IFoodService
 
     public void Edit(FoodDto dto)
     {
-        var food = _context.Foods.FirstOrDefault(f => f.Id == dto.Id);
+        var food = _context.Foods.Find(  dto.Id);
         food.Name = dto.Name;
         food.Price = dto.Price;
         food.Description = dto.Description;
