@@ -11,8 +11,8 @@ using ProductApp.Data;
 namespace ProductApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241128145721_productandcategory")]
-    partial class productandcategory
+    [Migration("20241204143115_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace ProductApp.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ProductApp.Entities.Category", b =>
+            modelBuilder.Entity("ProductApp.Entities.Member", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -32,9 +32,19 @@ namespace ProductApp.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<long>("MemberTypeId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("MemberTypeName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long>("MembertypesId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -42,10 +52,12 @@ namespace ProductApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.HasIndex("MembertypesId");
+
+                    b.ToTable("Members");
                 });
 
-            modelBuilder.Entity("ProductApp.Entities.Product", b =>
+            modelBuilder.Entity("ProductApp.Entities.Membertypes", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,41 +65,27 @@ namespace ProductApp.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("CategoryId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("MemberCount")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("TypeName")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Products");
+                    b.ToTable("Membertypes");
                 });
 
-            modelBuilder.Entity("ProductApp.Entities.Product", b =>
+            modelBuilder.Entity("ProductApp.Entities.Member", b =>
                 {
-                    b.HasOne("ProductApp.Entities.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
+                    b.HasOne("ProductApp.Entities.Membertypes", "Membertypes")
+                        .WithMany()
+                        .HasForeignKey("MembertypesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("ProductApp.Entities.Category", b =>
-                {
-                    b.Navigation("Products");
+                    b.Navigation("Membertypes");
                 });
 #pragma warning restore 612, 618
         }

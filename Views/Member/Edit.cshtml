@@ -1,0 +1,48 @@
+﻿@model MemberVm
+
+@{
+    ViewData["Title"] = "Edit Member";
+}
+
+<h2>Edit Member</h2>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+            <input type="" asp-for="MemberTypeId"/>
+
+            <div class="form-group mb-3">
+                <label asp-for="Name" class="form-label">Name</label>
+                <input asp-for="Name" class="form-control" placeholder="Enter member's name" required/>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Email" class="form-label">Email</label>
+                <input asp-for="Email" type="email" class="form-control" placeholder="Enter member's email" required/>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MemberTypeId" class="form-label">Member Type</label>
+                <select asp-for="MemberTypeId" class="form-select" asp-items="@(new SelectList(Model.Membertypes, "Id", "Name"))" required>
+                    <option value="">-- Select Member Type --</option>
+                </select>
+                <span asp-validation-for="MemberTypeId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MemberTypeName" class="form-label">Member Type Name</label>
+                <input asp-for="MemberTypeName" class="form-control" placeholder="Enter member type name" required/>
+                <span asp-validation-for="MemberTypeName" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

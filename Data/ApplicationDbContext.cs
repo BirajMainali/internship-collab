@@ -9,6 +9,6 @@ public class ApplicationDbContext: DbContext
         : base(options)
     {
     }
-    public DbSet<Category> Categories { get; set; }
-    public DbSet<Product> Products { get; set; }
+    public DbSet<Membertypes> Membertypes { get; set; }
+    public DbSet<Member> Members { get; set; }
 }

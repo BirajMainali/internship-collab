@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using ProductApp.Data;
+using ProductApp.Repositories;
+using ProductApp.Repositories.Interfaces;
+using ProductApp.Services;
+using ProductApp.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
@@ -9,6 +13,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IMembertypesService, MembertypesService>();
+builder.Services.AddScoped<IMembertypesRepository, MembertypesRepository>();
+builder.Services.AddScoped<IMemberService, MemberService>();
+builder.Services.AddScoped<IMemberRepository, MemberRepository>();
+
 
 var app = builder.Build();
 
