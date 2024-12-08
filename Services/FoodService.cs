@@ -22,21 +22,22 @@ public class FoodService: IFoodService
         food.Price = dto.Price;
         food.Description = dto.Description;
         food.CategoryId = dto.CategoryId;
-        _context.Foods.Add(food);
+       await _context.Foods.AddAsync(food);
         await _context.SaveChangesAsync();
 
         return food;
     }
 
-    public void Edit(FoodDto dto)
+    public async Task<Food> Edit(FoodDto dto)
     {
         var food = _context.Foods.Find(  dto.Id);
         food.Name = dto.Name;
         food.Price = dto.Price;
         food.Description = dto.Description;
         food.CategoryId = dto.CategoryId;
-        _context.Foods.Update(food);
-        _context.SaveChanges();
+        
+        await _context.SaveChangesAsync();
+        return food;
         
     }
 

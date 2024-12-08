@@ -1,10 +1,11 @@
 ﻿using ProductApp.Dto;
+using ProductApp.Entities;
 
 namespace ProductApp.Services.Interfaces;
 
 public interface ICategoryService
 {
-    public Task Create(CategoryDto dto);
-    public void Edit(CategoryDto dto);
-    public void Delete(long id);
+    Task<Category > Create(CategoryDto dto);
+    Task<Category > Edit(CategoryDto dto);
+     void Delete(long id);
 }

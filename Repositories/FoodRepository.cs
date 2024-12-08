@@ -30,6 +30,12 @@ public class FoodRepository:IFoodRepository
     {
         return _context.Foods;
     }
+
+    public IQueryable<Food> GetQueryable(long id)
+    {
+       return _context.Foods.Where(f => f.CategoryId == id);
+    }
+
     public FoodDto GetById(long id)
     {
         var food = _context.Foods.Find(id);

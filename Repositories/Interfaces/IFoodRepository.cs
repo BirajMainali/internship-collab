@@ -10,5 +10,6 @@ public interface IFoodRepository
     IQueryable<Food> GetQueryable();
 
 
-   
+    IQueryable<Food> GetQueryable(long id);
+
 }

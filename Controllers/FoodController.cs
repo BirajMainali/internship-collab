@@ -29,24 +29,39 @@ public class FoodController : Controller
         _categoryRepository = categoryRepository;
     }
 
-    public IActionResult Index()
+    public IActionResult Index(long? categoryId=null)
     {
         var foods = _FoodRepository.GetQueryable();
+        var categories = _categoryRepository.GetCategories();
+
+        if (categoryId.HasValue)
+        {
+            foods = foods.Where(x => x.CategoryId == categoryId.Value);
+        }
+
         
-        var vm = foods.Select(food => new FoodListVm
+        var listvm = foods.Select(food => new FoodListVm
         {
             Id = food.Id,
             Name = food.Name,
+            Price = food.Price,
             Description = food.Description,
             CategoryId= food.CategoryId,
             Category = food.Category.Name,
+            Categories = categories
 
         }).ToList();
-        
+        var vm = new FoodFilterVm
+        {
+            Foods = listvm,
+            Categories = new SelectList(categories, "Value", "Text"),
+            SelectedCategoryId = categoryId
 
-        
+        };
         return View(vm);
     }
+   
+    
 
    
 
@@ -59,7 +74,7 @@ public class FoodController : Controller
     }
 
     [HttpPost]
-    public IActionResult Create(FoodVm vm)
+    public async Task<IActionResult> Create(FoodVm vm)
     {
         if(!ModelState.IsValid)return View(vm);
         var dto = new FoodDto()
@@ -69,13 +84,13 @@ public class FoodController : Controller
             Description = vm.Description,
             CategoryId = vm.CategoryId
         };
-        _foodService.Create(dto);
+        await _foodService.Create(dto);
         return RedirectToAction("Index");
     }
 
     
 
-    public IActionResult Edit(int id)
+    public   IActionResult Edit(int id)
     {
         var dto = _FoodRepository.GetById(id);
         if(dto == null)return RedirectToAction("Index");
@@ -86,7 +101,7 @@ public class FoodController : Controller
     }
 
     [HttpPost]
-    public IActionResult Edit( long id, FoodVm vm)
+    public async Task <IActionResult> Edit( long id, FoodVm vm)
     {
         var dto = new FoodDto()
         {
@@ -98,7 +113,7 @@ public class FoodController : Controller
             CategoryId = vm.CategoryId
         };
         
-        _foodService.Edit(dto);
+       await _foodService.Edit(dto);
         return RedirectToAction("Index");
 
     }

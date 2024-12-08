@@ -4,19 +4,6 @@
     ViewBag.Title = "Category List";
     Layout = "_Layout";
 }
-@if (TempData["success"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["success"]
-    </div>
-}
-@if (TempData["error"] != null)
-{
-    <div class="alert alert-danger">
-        @TempData["error"]
-    </div>
-}
-
 
 
 <div class="container my-4">
@@ -48,7 +35,7 @@
                         <td>@item.Name</td>
                         <td>@item.Description</td>
                         <td>
-                            <a class="btn btn-warning" asp-controller="Category" asp-action="Edit" asp-route-id="@item.Id">Update</a>
+                            <a class="btn btn-warning" asp-controller="Category" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                             <a class="btn btn-danger" asp-controller="Category" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                         </td>
                     </tr>

@@ -29,7 +29,7 @@ public class CategoryController : Controller
         return View();
     }
     [HttpPost]
-    public IActionResult Create(CategoryVm vm)
+    public async Task< IActionResult> Create(CategoryVm vm)
     {
         if (!ModelState.IsValid) return View();
         var dto = new CategoryDto()
@@ -37,13 +37,13 @@ public class CategoryController : Controller
             Name = vm.Name,
             Description = vm.Description
         };
-        _categoryService.Create(dto);
+        await _categoryService.Create(dto);
         return RedirectToAction("Create");
     }
 
      public IActionResult Edit(long id)
      {
-         var dto = _categoryRepository.GetById(id);
+         var dto =  _categoryRepository.GetById(id);
          if (dto == null) return RedirectToAction("Index");
          var vm = new CategoryEditVm()
          {
@@ -57,7 +57,7 @@ public class CategoryController : Controller
      }
     
      [HttpPost]
-     public IActionResult Edit(long id, CategoryEditVm vm)
+     public async Task <IActionResult >Edit(long id, CategoryEditVm vm)
     {
         if (!ModelState.IsValid) return View(vm);
         var category = _categoryRepository.GetById(id);
@@ -69,27 +69,28 @@ public class CategoryController : Controller
             Name = vm.Name,
              Description = vm.Description
          };
-        _categoryService.Edit(dto);
+       await _categoryService.Edit(dto);
          return RedirectToAction("Index");
      }
     
      public IActionResult Delete(long id)
      {
-       var dto = _categoryRepository.GetById(id);
 
-       if (dto == null)
-       {
-           TempData["error"] = "Category not found";
-           return RedirectToAction("Index");
-       }
 
        try
        {
+           var dto = _categoryRepository.GetById(id);
+
+           if (dto == null)
+           {
+               throw new Exception("Category not found");
+           }
+
 
            _categoryService.Delete(id);
            TempData["success"] = "Category deleted";
        }
-       catch (InvalidOperationException ex)
+       catch (Exception ex)
        {
            TempData["error"] = ex.Message;
        }

@@ -12,4 +12,7 @@ public class FoodListVm
     public string  Description { get; set; }
     public long CategoryId { get; set; }
     public string  Category { get; set; }
+    public List<SelectListItem> Categories  = new List<SelectListItem>();
+    public SelectList GetCategoryOptions ()=> new SelectList(Categories, nameof(SelectListItem.Value), nameof(SelectListItem.Text), CategoryId);
+
 }

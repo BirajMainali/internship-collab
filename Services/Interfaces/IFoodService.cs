@@ -6,6 +6,6 @@ namespace ProductApp.Services.Interfaces;
 public interface IFoodService
 {
     public Task<Food> Create(FoodDto dto);
-    public void Edit(FoodDto dto);
-    public void Delete(long id);
+    Task<Food> Edit(FoodDto dto);
+    void Delete(long id);
 }

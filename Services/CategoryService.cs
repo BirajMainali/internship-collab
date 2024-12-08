@@ -15,31 +15,33 @@ public class CategoryService:ICategoryService
     {
         _context = context;
     }
-    public async Task Create(CategoryDto dto)
+    public async Task<Category> Create(CategoryDto dto)
     {
         var category = new Category()
         {
             Name = dto.Name,
             Description = dto.Description
         };
-        _context.Categories.Add(category); 
+        await _context.Categories.AddAsync (category); 
        await _context.SaveChangesAsync();
+       return category;
     }
 
-    public void Edit(CategoryDto dto)
+    public async Task<Category > Edit(CategoryDto dto)
     {
         var category=_context.Categories.FirstOrDefault(categories=>categories.Id==dto.Id);
         category.Name = dto.Name;
         category.Description = dto.Description;
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
+        return category;
     }
 
    
 
     public void Delete(long id)
     {
-        var foods=_context.Foods.Any(f=>f.CategoryId==id);
-        if (foods)
+        var hasfoods=_context.Foods.Any(f=>f.CategoryId==id);
+        if (hasfoods)
         {
             throw new InvalidOperationException("cannot delete category because it is associated with food ");
         }
