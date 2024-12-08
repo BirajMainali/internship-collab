@@ -1,0 +1,35 @@
+﻿@model FoodVm
+
+@{
+    ViewBag.Title = "Add Food";
+    Layout = "_Layout";
+}
+
+<h2>Add Food</h2>
+<form method="post">
+    <div class="container">
+        <div class="row">
+            <div class="col-2-sn">
+                <label asp-for="Name" class="form-label">Name</label>
+                <input type="text" class="form-control" asp-for="Name" placeholder="enter name"/>
+                <span asp-validation-for="Name"/>
+                <label asp-for="Price" class="form-label">Price</label>
+                <input type="number" class="form-control" asp-for="Price" placeholder="enter price"/>
+                <label asp-for="Description" class="form-label">Description</label>
+
+                <input type="text" class="form-control" asp-for="Description" placeholder="enter description"/>
+                <label asp-for="CategoryId" class="form-label">Category</label>
+
+
+                <select asp-for="CategoryId" aria-selected="False" asp-items="Model.GetCategoryOptions()" class="form-control">
+                    <option>Select</option>
+                </select>
+                
+                <button type="submit">submit</button>
+            </div>
+
+        </div>
+
+    </div>
+</form>
+

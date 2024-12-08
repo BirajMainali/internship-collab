@@ -1,0 +1,32 @@
+﻿@model ProductApp.Dto.FoodDto
+
+@{
+    ViewBag.Title = "Edit Food";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+<form method="post">
+    <div class="container">
+        <div class="row">
+            <div class="col-2-sn">
+                <Label asp-for="Name" class="form-label">Name</Label>
+               
+                <input type="text" class="form-control" asp-for="Name" placeholder="enter Name"/>
+                <Label asp-for="Price" class="form-label">Price</Label>
+                <input type="text" class="form-control" asp-for="Price" placeholder="enter price"/>
+                <Label asp-for="Description" class="form-label">Description</Label>
+
+                <input type="text" class="form-control" asp-for="Description" placeholder="enter description"/>
+                <Label asp-for="CategoryId" class="form-label">Category</Label> 
+                <select asp-for="CategoryId" aria-selected="False" asp-items="Model.GetCategoryOptions()" class="form-control">
+
+                </select>
+
+                <button type="submit" class="btn btn-success">submit</button>
+            </div>
+
+        </div>
+
+    </div>
+</form>
