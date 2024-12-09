@@ -5,22 +5,25 @@ using ProductApp.Repositories.Interfaces;
 
 namespace ProductApp.Repositories;
 
-public class SongRepo : ISongRepo
+public class ArtistRepo : IArtistRepo
 {
     private readonly AppDbContext _context;
 
-    public SongRepo(AppDbContext context)
+    // constructor
+    public ArtistRepo(AppDbContext context)              
     {
         _context = context;
     }
 
-    public async Task<List<Song>> GetAllWithArtistsAsync()
+    public async Task<List<Artist>> GetAllAsync()
     {
-        return await _context.Songs.Include(s => s.Artist).ToListAsync();
+        return await _context.Artists.ToListAsync();
     }
 
-    public async Task<Song?> GetByIdAsync(long id)
+    public async Task<Artist?> GetByIdAsync(long id)
     {
-        return await _context.Songs.Include(s => s.Artist).FirstOrDefaultAsync(s => s.Id == id);
+        return await _context.Artists.FirstOrDefaultAsync(a => a.Id == id);
     }
+    
+
 }

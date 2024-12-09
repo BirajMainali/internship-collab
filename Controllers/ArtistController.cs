@@ -26,7 +26,7 @@ public class ArtistController : Controller
         var artistVms = artists.Select(artist => new ArtistCreateVm
         {
             Id = artist.Id,
-            Name = artist.Name
+            Name = artist.Name 
         }).ToList();
 
         return View(artistVms);
