@@ -1,0 +1,18 @@
+﻿@model ProductApp.ViewModels.ArtistCreateVm
+
+@{
+    ViewData["Title"] = "Create Artist";
+}
+
+<h2 class="display-5 mb-5">Add Artist Details</h2>
+
+<form asp-action="Create" method="post" class="w-75">
+    <div class="form-group mb-4">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control"/>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
