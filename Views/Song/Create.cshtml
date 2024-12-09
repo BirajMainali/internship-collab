@@ -1,0 +1,39 @@
+﻿@model ProductApp.ViewModels.SongVm
+
+@{
+    ViewData["Title"] = "Create Song";
+}
+
+<h2 class="display-5 mb-5">Add Song Details</h2>
+
+<form asp-action="Create" method="post" class="w-75">
+    <div class="form-group mb-4">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control"/>
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-4">
+        <label asp-for="Genre"></label>
+        <input asp-for="Genre" class="form-control"/>
+        <span asp-validation-for="Genre" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-4">
+        <label asp-for="ArtistId">Artist</label>
+
+        <div class="d-flex align-items-center gap-4">
+            <select asp-for="ArtistId" asp-items="Model.Artists"
+                    class="form-control">
+                <option value=" ">-- Select a Artist --</option>
+            </select>
+            <a class="btn btn-secondary" asp-action="Create" asp-controller="Artist"
+               asp-route-returnUrl="@Url.Action("Create", "Song")" style="white-space: 
+            nowrap">Add Artist</a>
+        </div>
+
+        <span asp-validation-for="ArtistId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>

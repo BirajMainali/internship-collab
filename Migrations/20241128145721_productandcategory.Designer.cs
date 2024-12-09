@@ -10,7 +10,7 @@ using ProductApp.Data;
 
 namespace ProductApp.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20241128145721_productandcategory")]
     partial class productandcategory
     {

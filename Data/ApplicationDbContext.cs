@@ -3,12 +3,14 @@ using ProductApp.Entities;
 
 namespace ProductApp.Data;
 
-public class ApplicationDbContext: DbContext
+public class AppDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
+
     }
-    public DbSet<Category> Categories { get; set; }
-    public DbSet<Product> Products { get; set; }
+
+    // Dbset
+    public  DbSet<Artist> Artists { get; set; }
+    public DbSet<Song> Songs { get; set; }
 }
