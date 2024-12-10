@@ -1,6 +1,7 @@
 ﻿using ProductApp.Data;
 using ProductApp.Dtos;
 using ProductApp.Entities;
+using ProductApp.Repositories.Interfaces;
 using ProductApp.Services.Interfaces;
 
 namespace ProductApp.Services;
@@ -13,8 +14,8 @@ public class SongService : ISongService
     {
         _context = context;
     }
-
-    // Create song
+    
+     // Create song
     public async Task AddAsync(SongDto dto)
     {
         var song = new Song
@@ -55,4 +56,5 @@ public class SongService : ISongService
             await _context.SaveChangesAsync();
         }
     }
+    
 }

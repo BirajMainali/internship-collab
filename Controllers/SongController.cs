@@ -39,6 +39,7 @@ public class SongController : Controller
         return View(songVms);
     }
 
+
     // GET: song/create
     public async Task<IActionResult> Create()
     {
@@ -85,7 +86,6 @@ public class SongController : Controller
     }
 
     // GET: song/edit
-    // In SongController.cs
     [HttpGet]
     public async Task<IActionResult> Edit(long id)
     {

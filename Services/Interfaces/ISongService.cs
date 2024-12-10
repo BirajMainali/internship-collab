@@ -6,5 +6,5 @@ public interface ISongService
 {
     Task AddAsync(SongDto dto);
     Task UpdateAsync(SongDto dto);
-    Task DeleteAsync(long id); 
+    Task DeleteAsync(long id);
 }
