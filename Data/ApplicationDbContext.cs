@@ -12,4 +12,5 @@ public class ApplicationDbContext: DbContext
     
     public DbSet<Category> Categories { get; set; }
     public DbSet<Food> Foods{ get; set; }
+    public DbSet<ImageUpload>ImageUploads { get; set; }
 }

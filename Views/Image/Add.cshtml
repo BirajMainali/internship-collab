@@ -1,0 +1,22 @@
+﻿@model ImageUploadVm
+
+@{
+    ViewBag.Title = "Add Image";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+<form method="post" enctype="multipart/form-data" >
+    <div class="container">
+        <div class="row">
+            <label class="form-label">Image</label>   
+            <input type="file" name="image" id="image" accept="image/*" class="form-control" />
+            <button type="submit" class="btn btn-success">Upload</button>
+            
+            
+            
+        </div>
+
+    </div>
+
+</form>

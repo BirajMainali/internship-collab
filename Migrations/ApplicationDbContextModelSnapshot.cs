@@ -71,7 +71,7 @@ namespace ProductApp.Migrations
                     b.ToTable("Foods");
                 });
 
-            modelBuilder.Entity("ProductApp.Entities.Product", b =>
+            modelBuilder.Entity("ProductApp.Entities.ImageUpload", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -79,25 +79,18 @@ namespace ProductApp.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("CategoryId")
+                    b.Property<long>("FoodId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("FoodId");
 
-                    b.ToTable("Products");
+                    b.ToTable("ImageUploads");
                 });
 
             modelBuilder.Entity("ProductApp.Entities.Food", b =>
@@ -111,22 +104,20 @@ namespace ProductApp.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("ProductApp.Entities.Product", b =>
+            modelBuilder.Entity("ProductApp.Entities.ImageUpload", b =>
                 {
-                    b.HasOne("ProductApp.Entities.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
+                    b.HasOne("ProductApp.Entities.Food", "Food")
+                        .WithMany()
+                        .HasForeignKey("FoodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
+                    b.Navigation("Food");
                 });
 
             modelBuilder.Entity("ProductApp.Entities.Category", b =>
                 {
                     b.Navigation("Foods");
-
-                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

@@ -11,8 +11,8 @@ using ProductApp.Data;
 namespace ProductApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241128145721_productandcategory")]
-    partial class productandcategory
+    [Migration("20241210044221_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,7 +45,7 @@ namespace ProductApp.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("ProductApp.Entities.Product", b =>
+            modelBuilder.Entity("ProductApp.Entities.Food", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -71,13 +71,35 @@ namespace ProductApp.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Foods");
                 });
 
-            modelBuilder.Entity("ProductApp.Entities.Product", b =>
+            modelBuilder.Entity("ProductApp.Entities.ImageUpload", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("FoodId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FoodId");
+
+                    b.ToTable("ImageUploads");
+                });
+
+            modelBuilder.Entity("ProductApp.Entities.Food", b =>
                 {
                     b.HasOne("ProductApp.Entities.Category", "Category")
-                        .WithMany("Products")
+                        .WithMany("Foods")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -85,9 +107,20 @@ namespace ProductApp.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("ProductApp.Entities.ImageUpload", b =>
+                {
+                    b.HasOne("ProductApp.Entities.Food", "Food")
+                        .WithMany()
+                        .HasForeignKey("FoodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Food");
+                });
+
             modelBuilder.Entity("ProductApp.Entities.Category", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("Foods");
                 });
 #pragma warning restore 612, 618
         }

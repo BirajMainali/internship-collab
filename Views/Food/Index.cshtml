@@ -54,6 +54,9 @@
                         <td>@food.Price.ToString("C")</td>
                         <td>@food.Description</td>
                         <td class="text-center">
+                            <a class="btn btn-warning btn-sm me-2" asp-controller="Image" asp-action="Add" asp-route-id="@food.Id" >
+                                <i class="bi bi-pencil-square"></i> Add Image
+                            </a>
                             <a class="btn btn-warning btn-sm me-2" asp-controller="Food" asp-action="Edit" asp-route-id="@food.Id" title="Edit Food">
                                 <i class="bi bi-pencil-square"></i> Edit
                             </a>
@@ -71,7 +74,7 @@
 
 <!-- Optional: Add some custom styles for better presentation -->
 
-    <style>
+<style>
         /* Custom styling for the filter form */
         .form-select {
             max-width: 250px;
@@ -114,4 +117,3 @@
             font-size: 1.1rem;
         }
     </style>
-
