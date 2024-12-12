@@ -1,0 +1,45 @@
+﻿@model ProductApp.ViewModels.StudentVm
+
+@{
+    ViewData["Title"] = "Edit Student";
+}
+
+<h2 class="display-5 mb-5">Edit Student Details</h2>
+
+<form asp-action="Edit" method="post" class="w-75">
+    <div class="form-group mb-4">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control"/>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-4">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control"/>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-4">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form-control"/>
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-4">
+        <label asp-for="CourseId">Course</label>
+
+        <div class="d-flex align-items-center gap-4">
+            <select asp-for="CourseId" asp-items="@(new SelectList(Model.Courses, "Id", "Title"))"
+                    class="form-control">
+                <option value="">-- Select a category --</option>
+            </select>
+            <a class="btn btn-secondary" asp-action="Edit" asp-controller="Course"
+               asp-route-returnUrl="@Url.Action("Edit", "Student")" style="white-space: 
+            nowrap">Add Course</a>
+        </div>
+
+        <span asp-validation-for="CourseId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save Changes</button>
+</form>

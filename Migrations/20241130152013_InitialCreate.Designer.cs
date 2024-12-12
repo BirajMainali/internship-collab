@@ -10,9 +10,9 @@ using ProductApp.Data;
 
 namespace ProductApp.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241128145721_productandcategory")]
-    partial class productandcategory
+    [DbContext(typeof(AppDbContext))]
+    [Migration("20241130152013_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,6 +45,27 @@ namespace ProductApp.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("ProductApp.Entities.Course", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Courses");
+                });
+
             modelBuilder.Entity("ProductApp.Entities.Product", b =>
                 {
                     b.Property<long>("Id")
@@ -74,6 +95,38 @@ namespace ProductApp.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("ProductApp.Entities.Student", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<long>("CourseId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Students");
+                });
+
             modelBuilder.Entity("ProductApp.Entities.Product", b =>
                 {
                     b.HasOne("ProductApp.Entities.Category", "Category")
@@ -83,6 +136,17 @@ namespace ProductApp.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("ProductApp.Entities.Student", b =>
+                {
+                    b.HasOne("ProductApp.Entities.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("ProductApp.Entities.Category", b =>
